@@ -1,158 +1,169 @@
-# Phaser Vite TypeScript Template
+# Gorillas Browser Clone
 
-This is a Phaser 3 project template that uses Vite for bundling. It supports hot-reloading for quick development workflow, includes TypeScript support and scripts to generate production-ready builds.
+A faithful recreation of the classic QBASIC Gorillas game built with **Phaser.io 3.90.0** using **Test-Driven Development (TDD)** methodology.
 
-**[This Template is also available as a JavaScript version.](https://github.com/phaserjs/template-vite)**
+## 🎮 Game Overview
 
-### Versions
+Two gorillas positioned on city rooftops take turns throwing explosive bananas at each other in turn-based artillery gameplay with realistic physics, wind effects, and destructible environments.
 
-This template has been updated for:
+## 🚨 **CRITICAL: Test-Driven Development (TDD)**
 
-- [Phaser 3.90.0](https://github.com/phaserjs/phaser)
-- [Vite 6.3.1](https://github.com/vitejs/vite)
-- [TypeScript 5.7.2](https://github.com/microsoft/TypeScript)
+**This project follows strict TDD methodology. NO CODE should be written for any feature until comprehensive tests are written first.**
 
-![screenshot](screenshot.png)
+### TDD Workflow: 🔴 RED → 🟢 GREEN → 🔵 REFACTOR
 
-## Requirements
+## 🛠️ Technology Stack
 
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
+- **Game Engine**: Phaser.io 3.90.0 (committed choice)
+- **Language**: TypeScript 5.7.2  
+- **Build Tool**: Vite 6.3.1
+- **Testing**: Jest (unit tests) + Playwright (E2E tests)
+- **Development**: Test-Driven Development (TDD)
 
-## Available Commands
+## 📁 Project Structure
 
-| Command | Description |
-|---------|-------------|
-| `npm install` | Install project dependencies |
-| `npm run dev` | Launch a development web server |
-| `npm run build` | Create a production build in the `dist` folder |
-| `npm run dev-nolog` | Launch a development web server without sending anonymous data (see "About log.js" below) |
-| `npm run build-nolog` | Create a production build in the `dist` folder without sending anonymous data (see "About log.js" below) |
-
-## Writing Code
-
-After cloning the repo, run `npm install` from your project directory. Then, you can start the local development server by running `npm run dev`.
-
-The local development server runs on `http://localhost:8080` by default. Please see the Vite documentation if you wish to change this, or add SSL support.
-
-Once the server is running you can edit any of the files in the `src` folder. Vite will automatically recompile your code and then reload the browser.
-
-## Template Project Structure
-
-We have provided a default project structure to get you started. This is as follows:
-
-## Template Project Structure
-
-We have provided a default project structure to get you started:
-
-| Path                         | Description                                                |
-|------------------------------|------------------------------------------------------------|
-| `index.html`                 | A basic HTML page to contain the game.                     |
-| `public/assets`              | Game sprites, audio, etc. Served directly at runtime.      |
-| `public/style.css`           | Global layout styles.                                      |
-| `src/main.ts`                | Application bootstrap.                                     |
-| `src/game`                   | Folder containing the game code.                           |
-| `src/game/main.ts`           | Game entry point: configures and starts the game.          |
-| `src/game/scenes`            | Folder with all Phaser game scenes.                        | 
-
-
-## Handling Assets
-
-Vite supports loading assets via JavaScript module `import` statements.
-
-This template provides support for both embedding assets and also loading them from a static folder. To embed an asset, you can import it at the top of the JavaScript file you are using it in:
-
-```js
-import logoImg from './assets/logo.png'
+```
+/docs/           # All documentation in markdown
+/plan/           # Project plans and tasks (13 tasks total)  
+/src/            # Source code (write AFTER tests)
+/tests/          # All testing code (write FIRST)
+  ├── unit/      # Jest unit tests  
+  ├── e2e/       # Playwright E2E tests
+  ├── fixtures/  # Test data and mocks
+  └── utils/     # Testing utilities
 ```
 
-To load static files such as audio files, videos, etc place them into the `public/assets` folder. Then you can use this path in the Loader calls within Phaser:
+## 🚀 Getting Started
 
-```js
-preload ()
-{
-    //  This is an example of an imported bundled image.
-    //  Remember to import it at the top of this file
-    this.load.image('logo', logoImg);
+### Prerequisites
+- Node.js (latest LTS)
+- npm or yarn
 
-    //  This is an example of loading a static image
-    //  from the public/assets folder:
-    this.load.image('background', 'assets/bg.png');
-}
-```
-
-When you issue the `npm run build` command, all static assets are automatically copied to the `dist/assets` folder.
-
-## Deploying to Production
-
-After you run the `npm run build` command, your code will be built into a single bundle and saved to the `dist` folder, along with any other assets your project imported, or stored in the public assets folder.
-
-In order to deploy your game, you will need to upload *all* of the contents of the `dist` folder to a public facing web server.
-
-## Customizing the Template
-
-### Vite
-
-If you want to customize your build, such as adding plugin (i.e. for loading CSS or fonts), you can modify the `vite/config.*.mjs` file for cross-project changes, or you can modify and/or create new configuration files and target them in specific npm tasks inside of `package.json`. Please see the [Vite documentation](https://vitejs.dev/) for more information.
-
-## About log.js
-
-If you inspect our node scripts you will see there is a file called `log.js`. This file makes a single silent API call to a domain called `gryzor.co`. This domain is owned by Phaser Studio Inc. The domain name is a homage to one of our favorite retro games.
-
-We send the following 3 pieces of data to this API: The name of the template being used (vue, react, etc). If the build was 'dev' or 'prod' and finally the version of Phaser being used.
-
-At no point is any personal data collected or sent. We don't know about your project files, device, browser or anything else. Feel free to inspect the `log.js` file to confirm this.
-
-Why do we do this? Because being open source means we have no visible metrics about which of our templates are being used. We work hard to maintain a large and diverse set of templates for Phaser developers and this is our small anonymous way to determine if that work is actually paying off, or not. In short, it helps us ensure we're building the tools for you.
-
-However, if you don't want to send any data, you can use these commands instead:
-
-Dev:
-
+### Installation & Setup
 ```bash
-npm run dev-nolog
+# Clone repository
+git clone https://github.com/sam-rowe/GorillasBrowserClone.git
+cd GorillasBrowserClone
+
+# Install dependencies
+npm install
+
+# Verify testing setup
+npm run test          # Jest unit tests
+npm run test:e2e      # Playwright E2E tests
+npm run test:coverage # Coverage report
+
+# Start development server
+npm run dev
 ```
 
-Build:
-
+### Testing Commands
 ```bash
-npm run build-nolog
+npm run test              # Run unit tests
+npm run test:watch        # Watch mode for TDD
+npm run test:coverage     # Coverage report (90% minimum)
+npm run test:e2e          # E2E tests headless
+npm run test:e2e-ui       # E2E tests with UI
+npm run test:all          # All tests
+npm run lint              # ESLint
+npm run type-check        # TypeScript check
 ```
 
-Or, to disable the log entirely, simply delete the file `log.js` and remove the call to it in the `scripts` section of `package.json`:
+## 📋 Development Tasks
 
-Before:
+| Task | Feature | Priority | Tests Required |
+|------|---------|----------|---------------|
+| **01** | Basic Scene Structure | High | Unit + E2E |
+| **02** | City Skyline Generation | High | Unit + E2E |
+| **03** | Gorilla Character System | High | Unit + E2E |
+| **04** | Player Input System | Medium | Unit + E2E |
+| **05** | Projectile Physics | High | Unit + E2E |
+| **06** | Building Destruction | High | Unit + E2E |
+| **07** | Game State & Win/Lose | Medium | Unit + E2E |
+| **08** | Collision Detection | High | Unit + E2E |
+| **09** | Visual Effects | Medium | Unit + E2E |
+| **10** | UI/UX & Menus | Medium | E2E |
+| **11** | Audio System | Low | Unit + E2E |
+| **12** | Polish & Deployment | Low | E2E |
+| **13** | Help & Keyboard Controls | High | E2E |
 
-```json
-"scripts": {
-    "dev": "node log.js dev & dev-template-script",
-    "build": "node log.js build & build-template-script"
-},
-```
+## 🧪 TDD Requirements
 
-After:
+### For Every Feature:
+1. **🔴 RED**: Write comprehensive failing tests first
+2. **🟢 GREEN**: Write minimal code to pass tests  
+3. **🔵 REFACTOR**: Improve code while maintaining green tests
+4. **Coverage**: Minimum 90% across all metrics
 
-```json
-"scripts": {
-    "dev": "dev-template-script",
-    "build": "build-template-script"
-},
-```
+### Test Types Required:
+- **Unit Tests** (Jest): Game logic, physics, utilities
+- **E2E Tests** (Playwright): User journeys, cross-browser
+- **Performance Tests**: 60fps, load times
+- **Visual Regression**: Screenshot comparisons
 
-Either of these will stop `log.js` from running. If you do decide to do this, please could you at least join our Discord and tell us which template you're using! Or send us a quick email. Either will be super-helpful, thank you.
+## 🎯 Game Features
 
-## Join the Phaser Community!
+### Core Gameplay
+- ✅ Turn-based artillery mechanics
+- ✅ Physics-based banana projectiles with gravity and wind
+- ✅ Destructible building environments with crater formation
+- ✅ Two-player local multiplayer (hot seat)
+- ✅ Keyboard-only controls (no mouse/touch)
 
-We love to see what developers like you create with Phaser! It really motivates us to keep improving. So please join our community and show-off your work 😄
+### Visual Style  
+- ✅ Enhanced pixel art style (not limited to 4 colors)
+- ✅ Maximum 10 buildings with 50% height variation
+- ✅ Desktop-focused responsive design
+- ✅ Retro aesthetic with modern enhancements
 
-**Visit:** The [Phaser website](https://phaser.io) and follow on [Phaser Twitter](https://twitter.com/phaser_)<br />
-**Play:** Some of the amazing games [#madewithphaser](https://twitter.com/search?q=%23madewithphaser&src=typed_query&f=live)<br />
-**Learn:** [API Docs](https://newdocs.phaser.io), [Support Forum](https://phaser.discourse.group/) and [StackOverflow](https://stackoverflow.com/questions/tagged/phaser-framework)<br />
-**Discord:** Join us on [Discord](https://discord.gg/phaser)<br />
-**Code:** 2000+ [Examples](https://labs.phaser.io)<br />
-**Read:** The [Phaser World](https://phaser.io/community/newsletter) Newsletter<br />
+### Controls
+- ✅ **Keyboard Only**: Number input for angle/velocity
+- ✅ **Help System**: Prominent F1 help menu
+- ✅ **Navigation**: Arrow keys for menus
+- ✅ **Web Only**: No mobile/touch controls
 
-Created by [Phaser Studio](mailto:support@phaser.io). Powered by coffee, anime, pixels and love.
+## 📖 Documentation
 
-The Phaser logo and characters are &copy; 2011 - 2025 Phaser Studio Inc.
+- **[Testing Strategy](docs/testing-strategy.md)** - Comprehensive testing approach
+- **[TDD Workflow](docs/tdd-workflow.md)** - Step-by-step TDD process
+- **[Game Design](docs/game-design.md)** - Game mechanics and specifications
+- **[Project Plan](plan/plan.md)** - Complete development roadmap
 
-All rights reserved.
+## 🔍 Quality Assurance
+
+### Automated Testing
+- **90% Code Coverage** minimum requirement
+- **Cross-browser** testing (Chrome, Firefox, Safari)
+- **Performance** testing (60fps gameplay)
+- **Responsive** testing (multiple desktop resolutions)
+
+### Development Standards
+- **TypeScript** strict mode
+- **ESLint** code quality
+- **Phaser.io 3.90.0** exclusive game engine
+- **TDD** methodology mandatory
+
+## 🏆 Success Criteria
+
+- ✅ Faithful recreation of original QBASIC Gorillas gameplay
+- ✅ Smooth 60fps performance in modern browsers  
+- ✅ Comprehensive test coverage (90%+ minimum)
+- ✅ Clean, maintainable Phaser 3 codebase
+- ✅ Robust keyboard-only controls
+- ✅ Cross-browser compatibility
+
+## 🤝 Contributing
+
+1. **Follow TDD**: Write tests first, then implementation
+2. **Maintain Coverage**: All code must have ≥90% test coverage  
+3. **Use Phaser 3**: All game logic must use Phaser.io APIs
+4. **Desktop Focus**: Optimize for keyboard-only desktop experience
+5. **Test Everything**: Unit tests for logic, E2E for user experience
+
+## 📄 License
+
+MIT License - See [LICENSE](LICENSE) for details.
+
+---
+
+**Remember: This is a TDD project. Tests come first, implementation comes second. No exceptions!** 🧪
