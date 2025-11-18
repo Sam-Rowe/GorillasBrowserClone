@@ -71,21 +71,21 @@ npm run type-check        # TypeScript check
 
 ## 📋 Development Tasks
 
-| Task | Feature | Priority | Tests Required |
-|------|---------|----------|---------------|
-| **01** | Basic Scene Structure | High | Unit + E2E |
-| **02** | City Skyline Generation | High | Unit + E2E |
-| **03** | Gorilla Character System | High | Unit + E2E |
-| **04** | Player Input System | Medium | Unit + E2E |
-| **05** | Projectile Physics | High | Unit + E2E |
-| **06** | Building Destruction | High | Unit + E2E |
-| **07** | Game State & Win/Lose | Medium | Unit + E2E |
-| **08** | Collision Detection | High | Unit + E2E |
-| **09** | Visual Effects | Medium | Unit + E2E |
-| **10** | UI/UX & Menus | Medium | E2E |
-| **11** | Audio System | Low | Unit + E2E |
-| **12** | Polish & Deployment | Low | E2E |
-| **13** | Help & Keyboard Controls | High | E2E |
+| Task | Feature | Priority | Tests Required | Status |
+|------|---------|----------|----------------|---------|
+| **01** | Basic Scene Structure | High | Unit + E2E | ✅ **COMPLETED** |
+| **02** | City Skyline Generation | High | Unit + E2E | ✅ **COMPLETED** |
+| **03** | Gorilla Character System | High | Unit + E2E | ✅ **COMPLETED** |
+| **04** | Player Input System | Medium | Unit + E2E | ✅ **COMPLETED** |
+| **05** | Projectile Physics | High | Unit + E2E | ✅ **COMPLETED** |
+| **06** | Building Destruction | High | Unit + E2E | ✅ **COMPLETED** |
+| **07** | Game State & Win/Lose | Medium | Unit + E2E | ✅ **COMPLETED** |
+| **08** | Collision Detection | High | Unit + E2E | ✅ **INTEGRATED** |
+| **09** | Visual Effects | Medium | Unit + E2E | 🔄 **IN PROGRESS** |
+| **10** | UI/UX & Menus | Medium | E2E | 🔄 **IN PROGRESS** |
+| **11** | Audio System | Low | Unit + E2E | ⏳ **PENDING** |
+| **12** | Polish & Deployment | Low | E2E | ⏳ **PENDING** |
+| **13** | Help & Keyboard Controls | High | E2E | ✅ **COMPLETED** |
 
 ## 🧪 TDD Requirements
 
