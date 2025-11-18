@@ -23,14 +23,15 @@ export interface ShotValidationResult {
 export class InputValidator {
   validateAngle(angle: any): boolean {
     if (typeof angle !== 'number') return false;
-    return angle >= 0 && angle <= 180;
+    // Now allow full 360° range and negative angles
+    return true; // Accept any numeric angle, normalize later
   }
 
   validateAngleWithMessage(angle: any): ValidationResult {
-    if (!this.validateAngle(angle)) {
+    if (typeof angle !== 'number') {
       return {
         valid: false,
-        error: 'Angle must be between 0 and 180 degrees'
+        error: 'Angle must be a valid number'
       };
     }
     return { valid: true };
@@ -38,17 +39,32 @@ export class InputValidator {
 
   validateVelocity(velocity: any): boolean {
     if (typeof velocity !== 'number') return false;
-    return velocity >= 1 && velocity <= 100;
+    return velocity >= 1 && velocity <= 200; // Expanded range
   }
 
   validateVelocityWithMessage(velocity: any): ValidationResult {
     if (!this.validateVelocity(velocity)) {
       return {
         valid: false,
-        error: 'Velocity must be between 1 and 100'
+        error: 'Velocity must be between 1 and 200'
       };
     }
     return { valid: true };
+  }
+
+  // Helper method to get angle direction description
+  getAngleDescription(angle: number): string {
+    const normalized = ((angle % 360) + 360) % 360;
+    
+    if (normalized >= 315 || normalized < 45) {
+      return 'Right →';
+    } else if (normalized >= 45 && normalized < 135) {
+      return 'Up ↑';
+    } else if (normalized >= 135 && normalized < 225) {
+      return 'Left ←';
+    } else {
+      return 'Down ↓';
+    }
   }
 
   validateShot(angle: any, velocity: any): ShotValidationResult {

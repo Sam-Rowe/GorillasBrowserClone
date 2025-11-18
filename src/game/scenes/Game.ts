@@ -117,19 +117,66 @@ export class Game extends Scene {
         });
         
         // Input display
-        this.inputText = this.add.text(width - 300, 16, '', {
+        this.inputText = this.add.text(width - 350, 16, '', {
             fontSize: '16px',
             color: '#ffff00'
         });
         
-        // Instructions
+        // Instructions with angle guide
         this.instructionText = this.add.text(width/2, 50, 
-            'Enter angle (0-180°) then velocity (1-100) and press SPACE to fire!', {
-            fontSize: '14px',
-            color: '#ffffff'
+            'Angle Guide: 0°=Right → | 90°=Up ↑ | 180°=Left ← | 270°=Down ↓\n' +
+            'Enter angle (-360° to 360°), then velocity (1-200), then press SPACE to fire!', {
+            fontSize: '12px',
+            color: '#ffffff',
+            align: 'center'
         }).setOrigin(0.5, 0);
         
+        // Angle compass/indicator
+        this.createAngleCompass();
+        
         this.updateHUD();
+    }
+
+    createAngleCompass() {
+        const { width } = this.scale;
+        const compassX = width - 100;
+        const compassY = 120;
+        const radius = 40;
+        
+        // Compass circle
+        const compass = this.add.graphics();
+        compass.lineStyle(2, 0xffffff);
+        compass.strokeCircle(compassX, compassY, radius);
+        
+        // Direction markers
+        const directions = [
+            { angle: 0, label: '0°→', x: compassX + radius + 10, y: compassY },
+            { angle: 90, label: '90°↑', x: compassX, y: compassY - radius - 10 },
+            { angle: 180, label: '180°←', x: compassX - radius - 20, y: compassY },
+            { angle: 270, label: '270°↓', x: compassX, y: compassY + radius + 20 }
+        ];
+        
+        directions.forEach(dir => {
+            // Direction line
+            const radians = (dir.angle - 90) * Math.PI / 180; // -90 to make 0° point right
+            const endX = compassX + Math.cos(radians) * radius;
+            const endY = compassY + Math.sin(radians) * radius;
+            
+            compass.lineStyle(3, 0xffff00);
+            compass.lineBetween(compassX, compassY, endX, endY);
+            
+            // Direction label
+            this.add.text(dir.x, dir.y, dir.label, {
+                fontSize: '10px',
+                color: '#ffff00'
+            }).setOrigin(0.5);
+        });
+        
+        // Compass title
+        this.add.text(compassX, compassY - radius - 35, 'Angle Guide', {
+            fontSize: '12px',
+            color: '#ffffff'
+        }).setOrigin(0.5);
     }
 
     setupInput() {
@@ -157,6 +204,12 @@ export class Game extends Scene {
                 event.preventDefault();
             }
             
+            // Handle minus key for negative angles
+            if (key === '-' || key === 'Minus') {
+                this.handleMinusInput();
+                event.preventDefault();
+            }
+            
             // Handle other keys
             switch (event.code) {
                 case 'Backspace':
@@ -170,6 +223,11 @@ export class Game extends Scene {
                     break;
                 case 'Space':
                     this.handleSpace();
+                    event.preventDefault();
+                    break;
+                case 'Minus':
+                case 'NumpadSubtract':
+                    this.handleMinusInput();
                     event.preventDefault();
                     break;
             }
@@ -187,13 +245,17 @@ export class Game extends Scene {
         this.input.keyboard?.on('keydown-SPACE', () => {
             this.handleSpace();
         });
+
+        this.input.keyboard?.on('keydown-MINUS', () => {
+            this.handleMinusInput();
+        });
     }
 
     handleNumberInput(digit: string) {
         console.log(`Number input received: ${digit}, Mode: ${this.inputMode}`);
         
         if (this.inputMode === 'angle') {
-            if (this.currentAngle.length < 3) {
+            if (this.currentAngle.length < 4) { // Allow for negative angles like -180
                 this.currentAngle += digit;
                 console.log(`Angle updated: ${this.currentAngle}`);
             }
@@ -204,6 +266,16 @@ export class Game extends Scene {
             }
         }
         this.updateInputDisplay();
+    }
+
+    handleMinusInput() {
+        console.log(`Minus input received, Mode: ${this.inputMode}`);
+        
+        if (this.inputMode === 'angle' && this.currentAngle.length === 0) {
+            this.currentAngle = '-';
+            console.log(`Angle updated: ${this.currentAngle}`);
+            this.updateInputDisplay();
+        }
     }
 
     handleBackspace() {
@@ -381,11 +453,14 @@ export class Game extends Scene {
         let text = '';
         
         if (this.inputMode === 'angle') {
-            text = `Angle: ${this.currentAngle || '_'}° (Type numbers, then ENTER)`;
+            const angleDesc = this.currentAngle ? this.validator.getAngleDescription(parseInt(this.currentAngle) || 0) : '';
+            text = `Angle: ${this.currentAngle || '_'}° ${angleDesc}\n(Use - for negative, then type numbers, then ENTER)`;
         } else if (this.inputMode === 'velocity') {
-            text = `Angle: ${this.currentAngle}°\nVelocity: ${this.currentVelocity || '_'} (Type numbers, then ENTER)`;
+            const angleDesc = this.validator.getAngleDescription(parseInt(this.currentAngle) || 0);
+            text = `Angle: ${this.currentAngle}° ${angleDesc}\nVelocity: ${this.currentVelocity || '_'} (Type numbers, then ENTER)`;
         } else if (this.currentAngle && this.currentVelocity) {
-            text = `Angle: ${this.currentAngle}°\nVelocity: ${this.currentVelocity}\nPress SPACE to FIRE! 🍌`;
+            const angleDesc = this.validator.getAngleDescription(parseInt(this.currentAngle) || 0);
+            text = `Angle: ${this.currentAngle}° ${angleDesc}\nVelocity: ${this.currentVelocity}\nPress SPACE to FIRE! 🍌`;
         }
         
         this.inputText.setText(text);
