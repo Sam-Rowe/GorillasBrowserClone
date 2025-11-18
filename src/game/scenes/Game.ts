@@ -133,37 +133,74 @@ export class Game extends Scene {
     }
 
     setupInput() {
-        // Number key input
+        // Number key input - try multiple key formats
         for (let i = 0; i <= 9; i++) {
+            // Try different key event formats
             this.input.keyboard?.on(`keydown-DIGIT${i}`, () => {
+                this.handleNumberInput(i.toString());
+            });
+            this.input.keyboard?.on(`keydown-NUMPAD_${i}`, () => {
+                this.handleNumberInput(i.toString());
+            });
+            this.input.keyboard?.on(`keydown-${i}`, () => {
                 this.handleNumberInput(i.toString());
             });
         }
         
-        // Backspace
+        // Alternative: Listen to all keydown events and filter
+        this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
+            const key = event.key;
+            
+            // Handle number keys (both top row and numpad)
+            if (/^[0-9]$/.test(key)) {
+                this.handleNumberInput(key);
+                event.preventDefault();
+            }
+            
+            // Handle other keys
+            switch (event.code) {
+                case 'Backspace':
+                    this.handleBackspace();
+                    event.preventDefault();
+                    break;
+                case 'Enter':
+                case 'NumpadEnter':
+                    this.handleEnter();
+                    event.preventDefault();
+                    break;
+                case 'Space':
+                    this.handleSpace();
+                    event.preventDefault();
+                    break;
+            }
+        });
+        
+        // Backup individual key handlers
         this.input.keyboard?.on('keydown-BACKSPACE', () => {
             this.handleBackspace();
         });
         
-        // Enter - switch input mode
         this.input.keyboard?.on('keydown-ENTER', () => {
             this.handleEnter();
         });
         
-        // Space - fire!
         this.input.keyboard?.on('keydown-SPACE', () => {
             this.handleSpace();
         });
     }
 
     handleNumberInput(digit: string) {
+        console.log(`Number input received: ${digit}, Mode: ${this.inputMode}`);
+        
         if (this.inputMode === 'angle') {
             if (this.currentAngle.length < 3) {
                 this.currentAngle += digit;
+                console.log(`Angle updated: ${this.currentAngle}`);
             }
         } else if (this.inputMode === 'velocity') {
             if (this.currentVelocity.length < 3) {
                 this.currentVelocity += digit;
+                console.log(`Velocity updated: ${this.currentVelocity}`);
             }
         }
         this.updateInputDisplay();
@@ -344,13 +381,16 @@ export class Game extends Scene {
         let text = '';
         
         if (this.inputMode === 'angle') {
-            text = `Angle: ${this.currentAngle || '_'}° (Press ENTER)`;
+            text = `Angle: ${this.currentAngle || '_'}° (Type numbers, then ENTER)`;
         } else if (this.inputMode === 'velocity') {
-            text = `Angle: ${this.currentAngle}°\nVelocity: ${this.currentVelocity || '_'} (Press ENTER)`;
+            text = `Angle: ${this.currentAngle}°\nVelocity: ${this.currentVelocity || '_'} (Type numbers, then ENTER)`;
         } else if (this.currentAngle && this.currentVelocity) {
             text = `Angle: ${this.currentAngle}°\nVelocity: ${this.currentVelocity}\nPress SPACE to FIRE! 🍌`;
         }
         
         this.inputText.setText(text);
+        
+        // Also show debug info in console
+        console.log(`Input display updated - Mode: ${this.inputMode}, Angle: ${this.currentAngle}, Velocity: ${this.currentVelocity}`);
     }
 }
